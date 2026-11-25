@@ -2,13 +2,13 @@ name: OneVoid
 version: '${version}'
 main: com.extantape.onevoid.OneVoidPlugin
 api-version: '26.1'
-description: A OneBlock add-on. Walk in through the Waystation, ring your island's bell to leave, and turn what the void takes into rewards.
+description: A OneBlock add-on. Walk in through the Waycave, ring your island's bell to leave, and turn what the void takes into rewards.
 website: https://github.com/ExtantApe/OneVoid
 # /onevoid is registered with Brigadier in code, so there is no commands section.
 dependencies:
   server:
     # The OneBlock gate and the landing spot outside it.
-    Waystation:
+    Waycave:
       load: BEFORE
       required: true
       join-classpath: true

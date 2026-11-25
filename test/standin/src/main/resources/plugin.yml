@@ -1,8 +1,8 @@
-name: Waystation
-version: 0.4.0-standin
-main: com.extantape.waystation.StandinPlugin
+name: Waycave
+version: 0.8.0-standin
+main: com.extantape.waycave.StandinPlugin
 api-version: '26.1'
-description: Test-only stand-in for Waystation's hand-over API. Never shipped.
+description: Test-only stand-in for Waycave's hand-over API. Never shipped.
 commands:
   standin:
     permission: standin.use

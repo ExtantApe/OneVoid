@@ -12,9 +12,9 @@ export const JAVA = process.env.ONEVOID_TEST_JAVA ?? '/Library/Java/JavaVirtualM
 export const ROOT = new URL('../', import.meta.url).pathname
 const CACHE = path.join(ROOT, 'test/work/cache')
 export const sleep = ms => new Promise(r => setTimeout(r, ms))
-// Set ONEVOID_WAYSTATION_JAR to a real Waystation jar to test against it instead of the stand-in. Bots then walk
+// Set ONEVOID_WAYCAVE_JAR to a real Waycave jar to test against it instead of the stand-in. Bots then walk
 // through the station's real OneBlock gate.
-export const REAL_WAYSTATION = process.env.ONEVOID_WAYSTATION_JAR ?? null
+export const REAL_WAYCAVE = process.env.ONEVOID_WAYCAVE_JAR ?? null
 /** Every bot made by bot(), by name, so helpers that get only a name can walk it through the gate. */
 export const bots = new Map()
 
@@ -45,20 +45,20 @@ export class Server {
     if (existsSync(libs)) execSync(`cp -cR "${libs}/." "${this.dir}/"`)
     for (const p of [...manifest.plugins, ...manifest.via]) copyFileSync(p, this.path('plugins', path.basename(p)))
     copyFileSync(jar(path.join(ROOT, 'build/libs'), /^OneVoid-.*\.jar$/), this.path('plugins/OneVoid.jar'))
-    if (REAL_WAYSTATION) {
-      copyFileSync(REAL_WAYSTATION, this.path('plugins/Waystation.jar'))
+    if (REAL_WAYCAVE) {
+      copyFileSync(REAL_WAYCAVE, this.path('plugins/Waycave.jar'))
       // Its own default config, with the OneBlock world handed over and island posts off, as the README says.
-      let ws = execSync(`unzip -p "${REAL_WAYSTATION}" config.yml`, { encoding: 'utf8' })
+      let ws = execSync(`unzip -p "${REAL_WAYCAVE}" config.yml`, { encoding: 'utf8' })
       for (const [from, to] of [['worlds: {}', 'worlds:\n  oneblock: {label: "<aqua>OneBlock", hand-over: true}'],
         ['island-posts:\n  enabled: true', 'island-posts:\n  enabled: false']]) {
-        if (!ws.includes(from)) throw new Error(`Waystation's config.yml has no "${from}"`)
+        if (!ws.includes(from)) throw new Error(`Waycave's config.yml has no "${from}"`)
         ws = ws.replace(from, to)
       }
-      mkdirSync(this.path('plugins/Waystation'), { recursive: true })
-      writeFileSync(this.path('plugins/Waystation/config.yml'), ws)
-    } else copyFileSync(jar(path.join(ROOT, 'test/standin/build/libs'), /^WaystationStandin.*\.jar$/), this.path('plugins/WaystationStandin.jar'))
-    // Posse 0.11.0, from its GitHub release (see fetch.mjs).
-    copyFileSync(path.join(CACHE, 'Posse-0.11.0.jar'), this.path('plugins/Posse.jar'))
+      mkdirSync(this.path('plugins/Waycave'), { recursive: true })
+      writeFileSync(this.path('plugins/Waycave/config.yml'), ws)
+    } else copyFileSync(jar(path.join(ROOT, 'test/standin/build/libs'), /^WaycaveStandin.*\.jar$/), this.path('plugins/WaycaveStandin.jar'))
+    // Posse 0.11.1, from its GitHub release (see fetch.mjs).
+    copyFileSync(path.join(CACHE, 'Posse-0.11.1.jar'), this.path('plugins/Posse.jar'))
     for (const p of extraPlugins) copyFileSync(p, this.path('plugins', path.basename(p)))
     writeFileSync(this.path('eula.txt'), 'eula=true\n')
     writeFileSync(this.path('server.properties'), [

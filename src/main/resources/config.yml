@@ -1,7 +1,7 @@
 # OneVoid settings. After editing, run /onevoid reload.
 config-version: 1
 
-# The way bell: how players leave their island for the Waystation.
+# The way bell: how players leave their island for the Waycave.
 way-bell:
   # Rings needed, each a separate right-click, all within this many seconds. One ring alone never does anything.
   rings: 3

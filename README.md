@@ -1,14 +1,14 @@
 # OneVoid
 
-A OneBlock add-on for Paper. Players walk into OneBlock through the Waystation, ring their island's bell to leave, and get something back for whatever they lose to the void.
+A OneBlock add-on for Paper. Players walk into OneBlock through the Waycave, ring their island's bell to leave, and get something back for whatever they lose to the void.
 
-**Status:** 0.3.0, for Posse 0.11.0. Its travel and teams section passed against the real Posse jar on Paper 26.2 (2026-11-25), but the `crashes` section fails there and is unexplained (see docs/releases/v0.3.0.md). 0.2.0, a new name. Its full bot suite passed 86/86 for 0.1.1 on a throwaway Paper 26.2 server, and 0.1.2's respawn, void-death and way-bell sections pass with Waystation 0.7.0; tested with OneBlock 1.6.4, Multiverse-Core 5.8.2, Multiverse-Inventories 5.3.6, LuckPerms and Posse 0.1.1. The bots walk through Waystation's real OneBlock gate. The bots are 26.1 clients connecting through ViaVersion. On Paper 26.3 it loads, sets up and reports no problems, but no bot could play there: 26.3 disconnects clients that come through ViaVersion ("Invalid move player packet"), even ones standing still. Nothing has been seen in a real game client yet. See [Tested](#tested) for the details.
+**Status:** 0.4.0, for Waycave 0.8.0 and Posse 0.11.1. See [Tested](#tested) and docs/releases/v0.4.0.md for what ran. Earlier results: 0.1.1 passed its full bot suite 86/86 on a throwaway Paper 26.2 server; OneBlock 1.6.4, Multiverse-Core 5.8.2, Multiverse-Inventories 5.3.6 and LuckPerms are the tested versions. The bots are 26.1 clients connecting through ViaVersion. On Paper 26.3 it loads, sets up and reports no problems, but no bot could play there: 26.3 disconnects clients that come through ViaVersion ("Invalid move player packet"), even ones standing still. Nothing has been seen in a real game client yet.
 
 ## What it does
 
-**In and out.** The Waystation's OneBlock gate hands the player to OneVoid. The first time, OneBlock makes their island and they land on it with an empty OneBlock inventory. After that, they come back to the exact spot where they last rang their way bell. Players never type an `/ob` command.
+**In and out.** Waycave's OneBlock gate hands the player to OneVoid. The first time, OneBlock makes their island and they land on it with an empty OneBlock inventory. After that, they come back to the exact spot where they last rang their way bell. Players never type an `/ob` command.
 
-**The way bell.** Every island gets a bell on a crying obsidian post, two blocks from the one block. It never replaces one of the player's blocks: if that spot is taken, the bell goes to the nearest free one. A label above it says what it's for. Ringing it three times within 6 seconds takes the player to the Waystation, outside the OneBlock gate. One ring does nothing. Two rings, or rings too far apart, do nothing. Rings closer together than 8 ticks don't count, so holding the button down rings it only slowly: holding it for about a second does count, which is still a deliberate act. Hitting it, explosions, projectiles, redstone and other players' rings don't count. Nobody can break it, move it or blow it up, operators included. Sneaking and ringing opens the island menu.
+**The way bell.** Every island gets a bell on a crying obsidian post, two blocks from the one block. It never replaces one of the player's blocks: if that spot is taken, the bell goes to the nearest free one. A label above it says what it's for. Ringing it three times within 6 seconds takes the player to the Waycave, outside the OneBlock gate. One ring does nothing. Two rings, or rings too far apart, do nothing. Rings closer together than 8 ticks don't count, so holding the button down rings it only slowly: holding it for about a second does count, which is still a deliberate act. Hitting it, explosions, projectiles, redstone and other players' rings don't count. Nobody can break it, move it or blow it up, operators included. Sneaking and ringing opens the island menu.
 
 **Deaths.** Every death in OneBlock respawns the player outside the OneBlock gate, even with a bed set. On an island, items drop as normal and last 30 minutes instead of 5, counted only while the island is loaded. In the void, the items charge the void meter.
 
@@ -30,16 +30,16 @@ Powers run in real time, survive a restart, and say when they end.
 
 ## Needs
 
-Paper 26.1 or later, Java 25. Waystation 0.4.0 or later and OneBlock 1.6.4 (plugin name `Oneblock`) are required. Multiverse-Inventories keeps the OneBlock inventory in the OneBlock world. Posse circles are needed for travel and teams.
+Paper 26.1 or later, Java 25. Waycave 0.8.0 or later and OneBlock 1.6.4 (plugin name `Oneblock`) are required. Multiverse-Inventories keeps the OneBlock inventory in the OneBlock world. Posse circles are needed for travel and teams.
 
 ## Install
 
 With the server stopped:
 
-1. Copy `OneVoid-0.1.3.jar` to `plugins/`.
+1. Copy `OneVoid-0.4.0.jar` to `plugins/`.
 2. In OneBlock, turn off two settings that fight OneVoid: `/ob autojoin false` and `/ob rebirth_on_the_island false`. With autojoin on, OneBlock cancels the trip back to a player's bell.
-3. In Waystation, set the OneBlock world's gate to `hand-over: true` and turn island posts off (`island-posts.enabled: false`). The bell replaces them.
-4. Put the OneBlock world in its own Multiverse-Inventories group, and the Waystation's world in a group with the lobby, so a death in OneBlock is a plain OneBlock-to-lobby swap.
+3. In Waycave, set the OneBlock world's gate to `hand-over: true` and turn island posts off (`island-posts.enabled: false`). The bell replaces them.
+4. Put the OneBlock world in its own Multiverse-Inventories group, and the `waycave` world in a group with the lobby, so a death in OneBlock is a plain OneBlock-to-lobby swap.
 5. If Lantern Graves is installed, add the OneBlock world to its `disabled-worlds`. Otherwise it puts island deaths in graves. OneVoid takes void-death items before Lantern Graves sees them, so the two never both take the same items.
 6. Start the server and run `/onevoid status`. It lists anything still wrong.
 
@@ -72,6 +72,8 @@ Players keep OneBlock's `oneblock.join` permission. OneVoid refuses a typed `/ob
 
 ## Tested
 
+0.4.0 ran its full bot suite against the real Waycave 0.8.0 and Posse 0.11.1 jars on Paper 26.2 (90 of 90), and the server-only checks on Paper 26.3 (5 of 5).
+
 Bot tests (`test/suite.mjs`) on Paper 26.2, on 127.0.0.1, counting items after each step:
 
 - First visit, the bell (one ring, slow rings, hitting it, TNT), the trip out and back, with the same inventory, XP, health and hunger.
@@ -88,7 +90,7 @@ Not tested yet:
 
 ## Troubleshooting
 
-- **A player respawns on their island after a OneBlock death.** OneVoid sets the respawn at the Waystation's OneBlock gate and checks half a second later that they're within a block of it. If another plugin has moved them, OneVoid puts them back and writes a console warning saying where they'd been moved. Multiverse-Inventories' `apply-last-location-for-all-teleports` is the known cause: it can restore the step into the gate. Use Waystation 0.7.0 or later too. To find any other cause, start the server with `-Donevoid.trace=true`: every teleport and respawn is then logged with the code that caused it. Leave it off otherwise.
+- **A player respawns on their island after a OneBlock death.** OneVoid sets the respawn at Waycave's OneBlock gate and checks half a second later that they're within a block of it. If another plugin has moved them, OneVoid puts them back and writes a console warning saying where they'd been moved. Multiverse-Inventories' `apply-last-location-for-all-teleports` is the known cause: it can restore the step into the gate. Waycave 0.8.0 carries the step-clear rule from Waycave 0.7.0. To find any other cause, start the server with `-Donevoid.trace=true`: every teleport and respawn is then logged with the code that caused it. Leave it off otherwise.
 
 ## Build
 
@@ -96,7 +98,7 @@ Not tested yet:
 ./gradlew build
 ```
 
-The jar is `build/libs/OneVoid-0.1.3.jar`. To run the bot tests: `cd test && npm install && node fetch.mjs && ONEVOID_WAYSTATION_JAR=<path to Waystation-0.4.0.jar> node suite.mjs 26.2`. Without `ONEVOID_WAYSTATION_JAR` they use a small stand-in for Waystation (`test/standin`) instead.
+The jar is `build/libs/OneVoid-0.4.0.jar`. To run the bot tests: `cd test && npm install && node fetch.mjs && ONEVOID_WAYCAVE_JAR=<path to Waycave-0.8.0.jar> node suite.mjs 26.2`. Without `ONEVOID_WAYCAVE_JAR` they use a small stand-in for Waycave (`test/standin`) instead.
 
 ## License
 

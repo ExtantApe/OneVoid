@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.extantape"
-version = "0.3.0"
+version = "0.4.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
@@ -29,8 +29,8 @@ dependencies {
     compileOnly(paperApi)
     // MrMarL's OneBlock 1.6.4 (MIT). Only its public static getters are read; islands are made with its own command.
     compileOnly("maven.modrinth:oneblock_bukkit:1.6.4") { isTransitive = false }
-    // The hand-over event and landing service. Switches to the Waystation 0.4.0 jar once it's released.
-    compileOnly(project(":waystation-standin"))
+    // The hand-over event and landing service. Compiled against this stand-in, which has the same names and signatures as Waycave 0.8.0. The live tests can use the real jar.
+    compileOnly(project(":waycave-standin"))
 
     testImplementation(paperApi)
     testImplementation(platform("org.junit:junit-bom:5.11.4"))

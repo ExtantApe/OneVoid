@@ -29,7 +29,7 @@ import org.bukkit.inventory.EquipmentSlot;
 
 /**
  * The way bell. Ringing it the configured number of times, each a separate right-click by one of the island's
- * own players, sends them to the Waystation. Nothing else counts: not projectiles, not redstone, not other
+ * own players, sends them to the Waycave. Nothing else counts: not projectiles, not redstone, not other
  * players, not hitting it. Nothing can break it, move it or blow it up.
  */
 public final class BellListener implements Listener {
@@ -86,7 +86,7 @@ public final class BellListener implements Listener {
             rings.put(p.getUniqueId(), r);
             int left = s.rings - r.count;
             p.sendActionBar(Text.mm("<aqua>Way bell: ring " + r.count + " of " + s.rings + ".</aqua> <white>Ring "
-                    + (left == 1 ? "once more" : left + " more times") + " to go to the Waystation.</white>"));
+                    + (left == 1 ? "once more" : left + " more times") + " to go to the Waycave.</white>"));
             return;
         }
         rings.remove(p.getUniqueId());

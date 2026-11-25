@@ -4,7 +4,7 @@ import com.extantape.onevoid.Text;
 import com.extantape.onevoid.OneVoidPlugin;
 import com.extantape.onevoid.store.PlayerData;
 import com.extantape.onevoid.store.PlayerData.Spot;
-import com.extantape.waystation.LandingService;
+import com.extantape.waycave.LandingService;
 import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-/** Getting into OneBlock from the Waystation, and back out by the way bell. */
+/** Getting into OneBlock from the Waycave, and back out by the way bell. */
 public final class Trips {
     private final OneVoidPlugin plugin;
 
@@ -22,7 +22,7 @@ public final class Trips {
         this.plugin = plugin;
     }
 
-    /** The spot in front of the OneBlock gate at the Waystation. Asked fresh every time, never cached. */
+    /** The spot in front of the OneBlock gate at the Waycave. Asked fresh every time, never cached. */
     public Optional<Location> landing() {
         World w = plugin.bridge.world();
         if (w == null) return Optional.empty();
@@ -66,18 +66,18 @@ public final class Trips {
             if (first) {
                 Text.tell(p, "<green>This is your island.</green> Break the block under you and it comes back as "
                         + "something new. Your <aqua>way bell</aqua> is beside it: ring it " + plugin.settings.rings
-                        + " times to go back to the Waystation. Sneak and ring it for your void meter and island options.");
+                        + " times to go back to the Waycave. Sneak and ring it for your void meter and island options.");
             }
             plugin.rewards.deliver(p);
             plugin.meter.remindOffer(p);
         }, 10L);
     }
 
-    /** Rung the bell: save where they are, then go to the Waystation. */
+    /** Rung the bell: save where they are, then go to the Waycave. */
     public void leave(Player p, int island) {
         Optional<Location> dest = landing();
         if (dest.isEmpty()) {
-            Text.warn(p, "The Waystation isn't ready right now, so the bell can't take you there. "
+            Text.warn(p, "The Waycave isn't ready right now, so the bell can't take you there. "
                     + "Nothing has changed. Try again in a minute, and tell an admin if it keeps happening.");
             return;
         }
@@ -85,10 +85,10 @@ public final class Trips {
         d.lastSpot = standingOn(p) ? toSpot(p.getLocation()) : null;
         d.lastIsland = island;
         plugin.store.save(d);
-        p.sendActionBar(Text.mm("<aqua>The way bell takes you to the Waystation…</aqua>"));
+        p.sendActionBar(Text.mm("<aqua>The way bell takes you to the Waycave…</aqua>"));
         p.teleportAsync(dest.get(), TeleportCause.PLUGIN).thenAccept(ok -> {
             if (!ok) {
-                Text.warn(p, "Something stopped the trip to the Waystation. You're still on your island. Try again.");
+                Text.warn(p, "Something stopped the trip to the Waycave. You're still on your island. Try again.");
                 return;
             }
             p.saveData();
@@ -96,7 +96,7 @@ public final class Trips {
             // would bring those items back on the ground as well: a duplicate.
             World ob = plugin.bridge.world();
             if (plugin.settings.saveWorld && ob != null) ob.save();
-            Text.tell(p, "You're at the Waystation. Walk through the OneBlock gate to go back to your way bell, "
+            Text.tell(p, "You're at the Waycave. Walk through the OneBlock gate to go back to your way bell, "
                     + "with everything as you left it.");
         });
     }

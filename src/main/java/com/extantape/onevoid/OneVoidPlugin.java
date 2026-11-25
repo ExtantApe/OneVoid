@@ -16,7 +16,7 @@ import com.extantape.onevoid.store.PlayerData;
 import com.extantape.onevoid.store.PlayerStore;
 import com.extantape.onevoid.trip.DeathListener;
 import com.extantape.onevoid.trip.Trips;
-import com.extantape.waystation.WaystationHandOverEvent;
+import com.extantape.waycave.WaycaveHandOverEvent;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +115,7 @@ public final class OneVoidPlugin extends JavaPlugin implements Listener {
         List<String> out = new ArrayList<>(bridge.conflicts());
         World w = bridge.world();
         if (trips.landing().isEmpty())
-            out.add("Waystation gives no landing spot for the OneBlock world yet. Bell trips and respawns can't reach "
+            out.add("Waycave gives no landing spot for the OneBlock world yet. Bell trips and respawns can't reach "
                     + "the station until it does. Is its OneBlock gate set up with hand-over: true?");
         Plugin graves = Bukkit.getPluginManager().getPlugin("LanternGraves");
         if (graves != null && graves.isEnabled() && w != null
@@ -131,7 +131,7 @@ public final class OneVoidPlugin extends JavaPlugin implements Listener {
         List<String> out = new ArrayList<>();
         World w = bridge.world();
         out.add("OneBlock world: " + (w == null ? "not set" : w.getName()) + ", way bells placed: " + islands.all().size());
-        out.add("Waystation landing: " + trips.landing().map(l -> "ready").orElse("not available"));
+        out.add("Waycave landing: " + trips.landing().map(l -> "ready").orElse("not available"));
         List<String> warn = warnings();
         if (warn.isEmpty()) out.add("No problems found.");
         out.addAll(warn);
@@ -142,7 +142,7 @@ public final class OneVoidPlugin extends JavaPlugin implements Listener {
     // Walking through the OneBlock gate.
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onHandOver(WaystationHandOverEvent e) {
+    public void onHandOver(WaycaveHandOverEvent e) {
         World w = bridge.world();
         if (e.isHandled() || w == null || !e.getDestination().equalsIgnoreCase(w.getName())) return;
         e.setHandled(true);

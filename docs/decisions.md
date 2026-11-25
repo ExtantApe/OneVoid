@@ -48,3 +48,11 @@ The owner's decisions for Voidwell, with dates. Later work follows these without
 ## 2026-11-14
 
 - **Name (owner, D194, D196):** the plugin is renamed OneVoid. The owner chose "OneVoid" and asked that no old names be kept. Released as 0.2.0.
+
+## 2026-11-25: Waycave replaces Waystation (OneVoid 0.4.0)
+
+- Waystation 0.7.2 is replaced on the main server by Waycave 0.8.0 (owner rule: no plugin keeps its old name). OneVoid 0.4.0 depends on the plugin named `Waycave` and reads no Waystation name anywhere.
+- The API keeps its shape in a new package. `com.extantape.waycave.WaycaveHandOverEvent` has the same methods as the old event. `com.extantape.waycave.LandingService` is the same `Optional<Location> landing(String world)`.
+- Waycave stays a required dependency (`load: BEFORE`, `required: true`, `join-classpath: true`), not a soft one. Walking in through the OneBlock gate, the landing spot for the bell and the respawn all come from it, so without it nothing OneVoid does has anywhere to go. A soft dependency would load a plugin that can't do its job. The landing lookup was already fail-closed (an empty answer means a warning and no trip), and that stays.
+- Waycave's cave world is named `waycave` (it was `waystation`). Install notes and the test harness use that name. The gate id `station-oneblock` is unchanged.
+- Waycave 0.8.0 is the first supported version. 0.3.0 and earlier of OneVoid can't load with it.

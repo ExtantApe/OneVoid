@@ -1,13 +1,13 @@
 // OneVoid acceptance suite. Usage: node suite.mjs <26.2|26.3> [test names...]
 // Runs on a fresh throwaway server on 127.0.0.1:25621, which is deleted afterwards.
 import { writeFileSync, readFileSync, existsSync } from 'node:fs'
-import { Server, bot, bots, heard, count, summary, sleep, REAL_WAYSTATION } from './lib.mjs'
+import { Server, bot, bots, heard, count, summary, sleep, REAL_WAYCAVE } from './lib.mjs'
 
 const version = process.argv[2] ?? '26.2'
 const only = process.argv.slice(3)
 const results = []
 let s
-// Where the Waystation puts players: the stand-in's pad, or two blocks in front of the real station gate (set in setup).
+// Where the Waycave puts players: the stand-in's pad, or two blocks in front of the real station gate (set in setup).
 let LANDING = { dim: 'minecraft:overworld', x: 0.5, z: 3.5 }
 let GATE = null
 const atLanding = w => w.dim === LANDING.dim && Math.abs(w.x - LANDING.x) < 1 && Math.abs(w.z - LANDING.z) < 1
@@ -54,7 +54,7 @@ function meterOf(b) {
 const FACING = { north: [0, -1], south: [0, 1], east: [1, 0], west: [-1, 0] }
 
 async function gate(name) {
-  if (!REAL_WAYSTATION) {
+  if (!REAL_WAYCAVE) {
     await s.run(`standin gate ${name} oneblock`, /standin gate \S+ handled=(true|false)/)
     await sleep(2500)
     return
@@ -64,7 +64,7 @@ async function gate(name) {
   const b = bots.get(name)
   const [dx, dz] = FACING[GATE.facing]
   for (let i = 0; i < 4; i++) {
-    await s.run(`execute in minecraft:waystation run tp ${name} ${GATE.x + 0.5 + dx * 3} ${GATE.y} ${GATE.z + 0.5 + dz * 3}`, /Teleported/)
+    await s.run(`execute in minecraft:waycave run tp ${name} ${GATE.x + 0.5 + dx * 3} ${GATE.y} ${GATE.z + 0.5 + dz * 3}`, /Teleported/)
     await sleep(1500)
     const end = Date.now() + 5000
     b.setControlState('forward', true)
@@ -106,17 +106,22 @@ async function setup() {
   await s.stop()
   // Multiverse-Inventories groups, written while the server is down so it can't save over them.
   writeFileSync(s.path('plugins/Multiverse-Inventories/groups.yml'),
-    'groups:\n  Lobby:\n    worlds:\n    - world\n' + (REAL_WAYSTATION ? '    - waystation\n' : '') + '    shares:\n    - all\n  OneBlock:\n    worlds:\n    - oneblock\n    shares:\n    - all\n')
+    'groups:\n  Lobby:\n    worlds:\n    - world\n' + (REAL_WAYCAVE ? '    - waycave\n' : '') + '    shares:\n    - all\n  OneBlock:\n    worlds:\n    - oneblock\n    shares:\n    - all\n')
   await s.start()
   await s.run('gamerule minecraft:immediate_respawn true', /./)
   // Superflat lobbies spawn slimes even with monsters off, and a slime killing an idle bot spoils the inventory counts.
-  for (const w of ['overworld', ...(REAL_WAYSTATION ? ['waystation'] : [])]) {
+  for (const w of ['overworld', ...(REAL_WAYCAVE ? ['waycave'] : [])]) {
     await s.run(`execute in minecraft:${w} run gamerule minecraft:spawn_mobs false`, /./)
     await s.run(`execute in minecraft:${w} run kill @e[type=slime]`, /./)
   }
   await s.run('execute in minecraft:oneblock run gamerule minecraft:immediate_respawn true', /./)
-  if (REAL_WAYSTATION) {
-    for (const w of ['world', 'waystation', 'oneblock']) await s.run(`lp group default permission set multiverse.access.${w} true`, /Set|already/)
+  if (REAL_WAYCAVE) {
+    for (const w of ['world', 'waycave', 'oneblock']) await s.run(`lp group default permission set multiverse.access.${w} true`, /Set|already/)
+    // Waycave lays the cave out again when a world comes up and says so when every gate can be walked to. The
+    // gates are read only after that, because the first answer from `gate list` can still be the old layout.
+    for (let i = 0; i < 60 && !/The cave is built and every chamber and gate can be walked to/.test(s.log); i++) await sleep(1000)
+    if (!/The cave is built and every chamber and gate can be walked to/.test(s.log)) throw new Error('Waycave never finished building the cave')
+    await sleep(2000)
     // New worlds get their gates within about 30 seconds.
     for (let i = 0; i < 20 && !GATE; i++) {
       const m = s.mark(); s.cmd('gate list'); await sleep(1500)
@@ -124,12 +129,12 @@ async function setup() {
       if (g) GATE = { world: g[1], x: +g[2], y: +g[3], z: +g[4], facing: g[5], dest: g[6] }
       else await sleep(3000)
     }
-    if (!GATE) throw new Error('The real Waystation made no station-oneblock gate')
+    if (!GATE) throw new Error('The real Waycave made no station-oneblock gate')
     const [dx, dz] = FACING[GATE.facing]
     LANDING = { dim: `minecraft:${GATE.world}`, x: GATE.x + 0.5 + dx * 2, z: GATE.z + 0.5 + dz * 2 }
-    console.log('real Waystation: gate', JSON.stringify(GATE), 'landing', JSON.stringify(LANDING))
+    console.log('real Waycave: gate', JSON.stringify(GATE), 'landing', JSON.stringify(LANDING))
   }
-  const status = await s.run('onevoid status', /No problems found|Waystation|OneBlock|Lantern|circles/)
+  const status = await s.run('onevoid status', /No problems found|Waycave|OneBlock|Lantern|circles/)
   console.log('status:', s.log.slice(-800).split('\n').filter(l => /OneVoid|- /.test(l)).slice(-5).join(' / '))
 }
 
@@ -210,12 +215,12 @@ const tests = {
     await sleep(12000) // OneBlock loads its world a few seconds after startup
     const m = s.mark(); s.cmd('onevoid status'); await sleep(2000)
     const out = s.since(m)
-    check('server: OneBlock world found and Waystation landing ready', /OneBlock world: oneblock/.test(out) && /Waystation landing: ready/.test(out), out.split('\n').filter(l => / - /.test(l)).join(' / '))
+    check('server: OneBlock world found and Waycave landing ready', /OneBlock world: oneblock/.test(out) && /Waycave landing: ready/.test(out), out.split('\n').filter(l => / - /.test(l)).join(' / '))
     check('server: no problems reported', /No problems found/.test(out))
-    if (!REAL_WAYSTATION) {
+    if (!REAL_WAYCAVE) {
       const r = await s.run('standin gate Nobody oneblock', /no such player|handled=/)
       check('server: hand-over command path loads', !!r)
-    } else check('server: the real Waystation made the OneBlock gate', !!GATE, JSON.stringify(GATE))
+    } else check('server: the real Waycave made the OneBlock gate', !!GATE, JSON.stringify(GATE))
     const startup = s.log.split('\n').filter(l => /\[OneVoid\]/.test(l) && /WARN/.test(l))
     check('server: no startup warnings once set up', startup.length === 0, startup.join(' / '))
   },
@@ -732,7 +737,7 @@ const tests = {
     await ring(a, bell, 3)
     await sleep(3000)
     const out = await where('Ash')
-    check('way bell: three rings go to the Waystation', atLanding(out), JSON.stringify(out))
+    check('way bell: three rings go to the Waycave', atLanding(out), JSON.stringify(out))
     check('way bell: lobby inventory there', summary(a).diamond === 5 && !summary(a).dirt, JSON.stringify(summary(a)))
     await gate('Ash')
     await sleep(1500)
@@ -747,7 +752,7 @@ const tests = {
     await sleep(6000)
     const died = await where('Ash')
     check('way bell: after a bell trip and back, a void death still respawns outside the gate', atLanding(died), JSON.stringify(died))
-    await heard(a, /back at the Waystation/, 3000, m).then(() => check('way bell: and says so', true)).catch(e => check('way bell: and says so', false, e.message))
+    await heard(a, /back at the Waycave/, 3000, m).then(() => check('way bell: and says so', true)).catch(e => check('way bell: and says so', false, e.message))
     // What the real server's rehearsal saw: something moves the player back onto the island right after the respawn.
     // Played here by the console, within the first tick or two. OneVoid must still end with them at the gate.
     await s.run('execute in minecraft:oneblock run tp Ash 2.5 101 0.5', /Teleported/)
@@ -758,11 +763,11 @@ const tests = {
     await sleep(3000)
     const moved = await where('Ash')
     check('way bell: if another plugin moves them back after the respawn, OneVoid still puts them at the gate', atLanding(moved), JSON.stringify(moved))
-    check('way bell: and the console says what happened', /Something moved Ash away from the Waystation's OneBlock gate after their respawn/.test(s.since(mark)))
+    check('way bell: and the console says what happened', /Something moved Ash away from the Waycave's OneBlock gate after their respawn/.test(s.since(mark)))
     // What Multiverse-Inventories did on the real server's copy: right after the respawn, it put the player back on their
-    // last spot in the station, the step into the OneBlock gate. OneVoid puts them back at the landing, and Waystation
+    // last spot in the station, the step into the OneBlock gate. OneVoid puts them back at the landing, and Waycave
     // (0.7.0) won't fire a gate for someone a teleport put next to it until they've stepped clear.
-    if (REAL_WAYSTATION && GATE) {
+    if (REAL_WAYCAVE && GATE) {
       const mark2 = s.mark()
       await s.run('execute in minecraft:oneblock run tp Ash 0.5 -75 0.5', /Teleported/)
       await new Promise(res => { a.once('spawn', res); setTimeout(res, 8000) })
