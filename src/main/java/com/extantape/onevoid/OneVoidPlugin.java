@@ -123,7 +123,7 @@ public final class OneVoidPlugin extends JavaPlugin implements Listener {
             out.add("Lantern Graves is making graves in the OneBlock world. Add " + w.getName()
                     + " to its disabled-worlds, so island deaths drop items as they should.");
         if (!social.circlesExist())
-            out.add("No Mayor circles exist, so island travel and team invites are off.");
+            out.add("No Posse circles exist, so island travel and team invites are off.");
         return out;
     }
 

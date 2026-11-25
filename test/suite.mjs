@@ -465,7 +465,7 @@ const tests = {
   async travelAndTeams() {
     const a = await bot('Ash'); const b = await bot('Birch'); const c = await bot('Cedar'); const d = await bot('Dell')
     for (const [n, circle] of [['Ash', 'kids'], ['Birch', 'kids'], ['Dell', 'kids'], ['Cedar', 'adults']])
-      await s.run(`lp user ${n} permission set mayor.circle.${circle} true`, /Set|already/)
+      await s.run(`lp user ${n} permission set posse.circle.${circle} true`, /Set|already/)
     await sleep(1500)
     await home(a); await home(b); await home(c)
     await platform(true)

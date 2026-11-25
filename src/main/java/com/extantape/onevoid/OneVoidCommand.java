@@ -79,7 +79,7 @@ final class OneVoidCommand {
                                         if (r != null && allowed.contains(r) && d.offer.size() < 3) d.offer.add(id);
                                     }
                                     if (d.offer.isEmpty()) {
-                                        c.getSource().getSender().sendMessage("OneVoid: none of those can be offered to " + p.getName() + " now. Rewards: featherfall, void-safe, bountiful-block, void-gives-back (needs gear given to the void), island-travel (needs Mayor circles). Turned-off rewards are never offered.");
+                                        c.getSource().getSender().sendMessage("OneVoid: none of those can be offered to " + p.getName() + " now. Rewards: featherfall, void-safe, bountiful-block, void-gives-back (needs gear given to the void), island-travel (needs Posse circles). Turned-off rewards are never offered.");
                                         return 0;
                                     }
                                     d.meter.points = Math.max(d.meter.points, plugin.settings.full);

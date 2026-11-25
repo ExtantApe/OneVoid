@@ -2,7 +2,7 @@
 
 A OneBlock add-on for Paper. Players walk into OneBlock through the Waystation, ring their island's bell to leave, and get something back for whatever they lose to the void.
 
-**Status:** 0.2.0, a new name. Its full bot suite passed 86/86 for 0.1.1 on a throwaway Paper 26.2 server, and 0.1.2's respawn, void-death and way-bell sections pass with Waystation 0.7.0; tested with OneBlock 1.6.4, Multiverse-Core 5.8.2, Multiverse-Inventories 5.3.6, LuckPerms and Mayor 0.1.1. The bots walk through Waystation's real OneBlock gate. The bots are 26.1 clients connecting through ViaVersion. On Paper 26.3 it loads, sets up and reports no problems, but no bot could play there: 26.3 disconnects clients that come through ViaVersion ("Invalid move player packet"), even ones standing still. Nothing has been seen in a real game client yet. See [Tested](#tested) for the details.
+**Status:** 0.3.0, for Posse 0.11.0. Its travel and teams section passed against the real Posse jar on Paper 26.2 (2026-11-25), but the `crashes` section fails there and is unexplained (see docs/releases/v0.3.0.md). 0.2.0, a new name. Its full bot suite passed 86/86 for 0.1.1 on a throwaway Paper 26.2 server, and 0.1.2's respawn, void-death and way-bell sections pass with Waystation 0.7.0; tested with OneBlock 1.6.4, Multiverse-Core 5.8.2, Multiverse-Inventories 5.3.6, LuckPerms and Posse 0.1.1. The bots walk through Waystation's real OneBlock gate. The bots are 26.1 clients connecting through ViaVersion. On Paper 26.3 it loads, sets up and reports no problems, but no bot could play there: 26.3 disconnects clients that come through ViaVersion ("Invalid move player packet"), even ones standing still. Nothing has been seen in a real game client yet. See [Tested](#tested) for the details.
 
 ## What it does
 
@@ -20,7 +20,7 @@ A OneBlock add-on for Paper. Players walk into OneBlock through the Waystation, 
 - **Void-safe:** for 2 minutes, falling into the void lifts the player back to their island with everything they carry.
 - **Bountiful block:** their one block drops double for 5 minutes.
 - **The void gives back:** a stated 1 in 3 chance that half of the weapons and armour they've given the void come back, each with one enchantment a level past the usual most (Sharpness VI, Protection V and so on). If not, the meter starts again 25% full and the gear stays for another try. Offered only when there's gear to give back.
-- **Island travel:** for 5 minutes, visit the islands of players who are online, share a Mayor chat circle with them, and have turned visits on.
+- **Island travel:** for 5 minutes, visit the islands of players who are online, share a Posse chat circle with them, and have turned visits on.
 
 Powers run in real time, survive a restart, and say when they end.
 
@@ -30,7 +30,7 @@ Powers run in real time, survive a restart, and say when they end.
 
 ## Needs
 
-Paper 26.1 or later, Java 25. Waystation 0.4.0 or later and OneBlock 1.6.4 (plugin name `Oneblock`) are required. Multiverse-Inventories keeps the OneBlock inventory in the OneBlock world. Mayor circles are needed for travel and teams.
+Paper 26.1 or later, Java 25. Waystation 0.4.0 or later and OneBlock 1.6.4 (plugin name `Oneblock`) are required. Multiverse-Inventories keeps the OneBlock inventory in the OneBlock world. Posse circles are needed for travel and teams.
 
 ## Install
 

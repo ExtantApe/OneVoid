@@ -18,7 +18,7 @@ dependencies:
       required: true
       join-classpath: true
     # Optional. Its circle permissions decide who may visit or team up with whom.
-    Mayor:
+    Posse:
       load: BEFORE
       required: false
 permissions:

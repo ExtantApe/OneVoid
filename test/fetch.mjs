@@ -58,5 +58,5 @@ const out = {
 }
 writeFileSync(path.join(CACHE, 'manifest.json'), JSON.stringify(out, null, 2))
 console.log('all jars checked')
-// Mayor isn't on Modrinth yet. Fetch its release jar with: gh release download v0.1.1 -R ExtantApe/Mayor -p '*.jar' -D test/work/cache
-if (!existsSync(path.join(CACHE, 'Mayor-0.1.1.jar'))) console.log('Missing Mayor-0.1.1.jar: see the note at the end of fetch.mjs')
+// Posse isn't on Modrinth yet. Fetch its release jar with: gh release download v0.11.0 -R ExtantApe/Posse -p '*.jar' -D test/work/cache
+if (!existsSync(path.join(CACHE, 'Posse-0.11.0.jar'))) console.log('Missing Posse-0.11.0.jar: see the note at the end of fetch.mjs')
