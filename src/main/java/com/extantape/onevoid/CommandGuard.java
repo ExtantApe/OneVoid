@@ -27,7 +27,7 @@ public final class CommandGuard implements Listener {
     public void onCommand(PlayerCommandPreprocessEvent e) {
         if (!isOneBlock(e.getMessage()) || e.getPlayer().hasPermission(BYPASS)) return;
         e.setCancelled(true);
-        Text.tell(e.getPlayer(), "OneBlock has no commands here. Walk through the OneBlock gate at the Waystation to "
+        Text.tell(e.getPlayer(), "OneBlock has no commands here. Walk through the OneBlock gate at the Waycave to "
                 + "reach your island. On your island, ring your way bell to leave, or sneak and ring it for everything else.");
     }
 

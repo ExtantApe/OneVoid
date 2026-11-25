@@ -121,7 +121,7 @@ public final class WayBells {
         return w.spawn(at, TextDisplay.class, d -> {
             d.setPersistent(false);
             d.text(Text.mm("<aqua><bold>Way bell</bold></aqua>\n<white>Ring " + rings
-                    + " times to go to the Waystation</white>\n<gray>Sneak and ring for island options</gray>"));
+                    + " times to go to the Waycave</white>\n<gray>Sneak and ring for island options</gray>"));
             d.setBillboard(Display.Billboard.CENTER);
             d.setShadowed(true);
             d.setSeeThrough(false);

@@ -1,4 +1,4 @@
-package com.extantape.waystation;
+package com.extantape.waycave;
 
 import java.util.Optional;
 import org.bukkit.Bukkit;
@@ -12,7 +12,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Stands in for Waystation in OneVoid's live tests. The "station" is a stone pad in the main world.
+ * Stands in for Waycave in OneVoid's live tests. The "station" is a stone pad in the main world.
  * "/standin gate <player> <world>" plays the part of walking through that world's gate.
  * "/standin landing on|off" makes landing() answer or come back empty, to test the fallback.
  */
@@ -52,7 +52,7 @@ public final class StandinPlugin extends JavaPlugin {
             Player player = Bukkit.getPlayerExact(args[1]);
             if (player == null) { sender.sendMessage("standin: no such player"); return true; }
             player.closeInventory();
-            WaystationHandOverEvent event = new WaystationHandOverEvent(player, "gate-" + args[2], args[2]);
+            WaycaveHandOverEvent event = new WaycaveHandOverEvent(player, "gate-" + args[2], args[2]);
             Bukkit.getPluginManager().callEvent(event);
             if (!event.isHandled()) player.sendMessage("That world isn't open right now.");
             sender.sendMessage("standin gate " + player.getName() + " handled=" + event.isHandled());

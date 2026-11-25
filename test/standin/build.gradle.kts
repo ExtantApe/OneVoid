@@ -6,4 +6,4 @@ dependencies { compileOnly(rootProject.extra["paperApi"] as String) }
 
 tasks.withType<JavaCompile>().configureEach { options.release.set(25) }
 
-tasks.jar { archiveBaseName.set("WaystationStandin") }
+tasks.jar { archiveBaseName.set("WaycaveStandin") }

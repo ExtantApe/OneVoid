@@ -25,7 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 /**
  * Deaths in the OneBlock world. In the void, the items go to the void meter. On an island, they drop as normal
- * and last longer. Either way the player respawns outside the OneBlock gate at the Waystation, bed or not.
+ * and last longer. Either way the player respawns outside the OneBlock gate at the Waycave, bed or not.
  */
 public final class DeathListener implements Listener {
     private final OneVoidPlugin plugin;
@@ -106,7 +106,7 @@ public final class DeathListener implements Listener {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (!p.isOnline()) return;
                 p.saveData();
-                Text.tell(p, "You're back at the Waystation. Walk through the OneBlock gate to return to your island.");
+                Text.tell(p, "You're back at the Waycave. Walk through the OneBlock gate to return to your island.");
             });
             // Another plugin can still move a player after the respawn (seen once on a real server's rehearsal, not
             // in this repo's tests). The promise is the gate, so put them there, and say so in the console, so an
@@ -117,18 +117,18 @@ public final class DeathListener implements Listener {
                 Location at = p.getLocation();
                 // Seen on a real server (2026-11-10): Multiverse-Inventories with apply-last-location-for-all-teleports
                 // put respawned players back on their last spot in the station, the step into the OneBlock gate.
-                plugin.getLogger().warning("Something moved " + p.getName() + " away from the Waystation's OneBlock gate after their respawn (to "
+                plugin.getLogger().warning("Something moved " + p.getName() + " away from the Waycave's OneBlock gate after their respawn (to "
                         + at.getWorld().getName() + " " + at.getBlockX() + ", " + at.getBlockY() + ", " + at.getBlockZ() + "). Putting them back, as OneVoid promised."
                         + " Multiverse-Inventories' apply-last-location-for-all-teleports does this; -Donevoid.trace=true shows any other cause.");
                 p.teleportAsync(promised, org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN);
             }, 10L);
         } else {
-            // Waystation can't say where its gate is. Respawning on the island at least keeps OneBlock's inventory
+            // Waycave can't say where its gate is. Respawning on the island at least keeps OneBlock's inventory
             // in the OneBlock world. The player is told, rather than left wondering.
             int island = plugin.bridge.islandOf(p.getUniqueId());
             if (island >= 0) e.setRespawnLocation(plugin.bridge.oneBlock(island).add(0.5, 1.2, 0.5));
             Bukkit.getScheduler().runTask(plugin, () -> {
-                if (p.isOnline()) Text.warn(p, "The Waystation isn't answering, so you're back on your island instead.");
+                if (p.isOnline()) Text.warn(p, "The Waycave isn't answering, so you're back on your island instead.");
             });
         }
     }

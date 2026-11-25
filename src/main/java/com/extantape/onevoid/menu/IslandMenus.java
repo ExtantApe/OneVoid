@@ -34,7 +34,7 @@ public final class IslandMenus {
         Menu m = new Menu(3, Text.mm("Your island"));
 
         m.set(4, Menu.icon(Material.BELL, Text.plain("<aqua>Way bell</aqua>"), List.of(
-                Text.plain("<white>Ring it " + s.rings + " times to go to the Waystation.</white>"),
+                Text.plain("<white>Ring it " + s.rings + " times to go to the Waycave.</white>"),
                 Text.plain("<gray>You'll come back right here, with everything as you left it.</gray>"))), null);
 
         // The void meter.

@@ -28,7 +28,7 @@ Gap: which plugin on the real server does it isn't known yet. `-Donevoid.trace=t
 
 ## 2026-11-10: first full audit (at 0.1.0)
 
-What OneVoid promises (README "What it does" and "Tested", `docs/decisions.md`), and what proves it. "Bots" is `test/suite.mjs` on a throwaway Paper 26.2 server with the real Waystation, OneBlock, Multiverse, LuckPerms and Posse; "unit" is `src/test`.
+What OneVoid promises (README "What it does" and "Tested", `docs/decisions.md`), and what proves it. "Bots" is `test/suite.mjs` on a throwaway Paper 26.2 server with the real Waystation (Waycave from 0.4.0), OneBlock, Multiverse, LuckPerms and Posse; "unit" is `src/test`.
 
 ### Covered
 
@@ -66,3 +66,13 @@ After the refactor, the bot suite's 82 checks all passed on Paper 26.2 (2026-11-
 
 - **Each visitor action separately (place, open, hurt, buckets, hanging items).** They share `guarded()` with breaking, which is tested. A bot can't reliably right-click blocks through ViaBackwards.
 - **Admins with `onevoid.admin` not being held back on islands.** It's convenience for support, and protects nothing.
+
+## 2026-11-25: Waycave 0.8.0 port (0.4.0)
+
+What changed: the plugin it depends on, and the package and class names it reads (`com.extantape.waycave.WaycaveHandOverEvent`, `LandingService`). Nothing about what OneVoid promises changed.
+
+- **Covered:** every bot section that went through the Waystation gate now goes through Waycave 0.8.0's real OneBlock gate (walked in by the bots), with the same checks. The landing spot, the bell trip out, the respawn at the gate and the step-clear fallback are all asked of the real `LandingService`.
+- **Gap found and fixed in the harness:** Waycave lays its cave out again after the OneBlock world comes up, so the first `gate list` answer was the old layout and the bots walked to a gate that wasn't there. The suite now waits for Waycave's "cave is built" line and reads the gates after that. Without it, every section that needs the gate fails.
+- **No new unit tests.** The port renames types and strings only. Unit tests (17) still cover the logic.
+- **Fail-closed paths:** an empty or missing `LandingService` was already covered by the stand-in run (`/standin landing off`) and still is. There is no run with Waycave missing, because it is a required dependency and Paper refuses to load OneVoid without it.
+- **Not tested:** Waycave versions after 0.8.0, and a real game client.

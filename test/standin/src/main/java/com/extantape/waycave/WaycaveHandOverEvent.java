@@ -1,18 +1,18 @@
-package com.extantape.waystation;
+package com.extantape.waycave;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-/** Test stand-in with the same shape as Waystation 0.4.0's event. */
-public class WaystationHandOverEvent extends PlayerEvent {
+/** Test stand-in with the same shape as Waycave 0.8.0's event. */
+public class WaycaveHandOverEvent extends PlayerEvent {
     private static final HandlerList HANDLERS = new HandlerList();
     private final String gateId;
     private final String destination;
     private boolean handled;
 
-    public WaystationHandOverEvent(Player player, String gateId, String destination) {
+    public WaycaveHandOverEvent(Player player, String gateId, String destination) {
         super(player);
         this.gateId = gateId;
         this.destination = destination;
