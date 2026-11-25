@@ -6,7 +6,7 @@ import path from 'node:path'
 import os from 'node:os'
 import mineflayer from 'mineflayer'
 
-export const PORT = 25621
+export const PORT = Number(process.env.ONEVOID_TEST_PORT ?? 25621)
 export const CLIENT = '26.1'
 export const JAVA = process.env.ONEVOID_TEST_JAVA ?? '/Library/Java/JavaVirtualMachines/openjdk-25.jdk/Contents/Home/bin/java'
 export const ROOT = new URL('../', import.meta.url).pathname
