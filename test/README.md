@@ -1,6 +1,6 @@
 # Live tests
 
-Bot tests on a throwaway Paper server on 127.0.0.1:25621 (set `ONEVOID_TEST_PORT` to use another port). Each run makes a fresh server folder in a temp directory and deletes it afterwards. No real server is ever copied.
+Bot tests on a throwaway Paper server on 127.0.0.1:25621 (set `OV_TEST_PORT` to use another port). Each run makes a fresh server folder in a temp directory and deletes it afterwards. No real server is ever copied.
 
 ```bash
 npm install
