@@ -603,6 +603,9 @@ const tests = {
   async crashes() {
     // A crash right after an island death. The lobby inventory is set here, so this test also passes on its own.
     let a = await bot('Ash')
+    // Earlier tests can leave Ash on an island, where a give would land in the island inventory: empty it, go back to the lobby, then give.
+    await s.run('clear Ash', /Removed|No items/)
+    await s.run('execute in minecraft:overworld run tp Ash 0.5 -59 3.5', /Teleported/); await sleep(1500)
     await s.run('clear Ash', /Removed|No items/); await s.run('give Ash diamond 5', /Gave/)
     await sleep(500)
     await home(a)
