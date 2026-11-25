@@ -28,7 +28,7 @@ Gap: which plugin on the real server does it isn't known yet. `-Donevoid.trace=t
 
 ## 2026-11-10: first full audit (at 0.1.0)
 
-What OneVoid promises (README "What it does" and "Tested", `docs/decisions.md`), and what proves it. "Bots" is `test/suite.mjs` on a throwaway Paper 26.2 server with the real Waystation, OneBlock, Multiverse, LuckPerms and Mayor; "unit" is `src/test`.
+What OneVoid promises (README "What it does" and "Tested", `docs/decisions.md`), and what proves it. "Bots" is `test/suite.mjs` on a throwaway Paper 26.2 server with the real Waystation, OneBlock, Multiverse, LuckPerms and Posse; "unit" is `src/test`.
 
 ### Covered
 

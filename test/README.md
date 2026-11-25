@@ -5,7 +5,7 @@ Bot tests on a throwaway Paper server on 127.0.0.1:25621. Each run makes a fresh
 ```bash
 npm install
 node fetch.mjs                 # Paper, OneBlock, Multiverse, LuckPerms, Via: each checked against its published hash
-gh release download v0.1.1 -R ExtantApe/Mayor -p '*.jar' -D work/cache
+gh release download v0.11.0 -R ExtantApe/Posse -p '*.jar' -D work/cache
 (cd .. && ./gradlew build)     # OneVoid and the Waystation stand-in
 node suite.mjs 26.2            # everything
 node suite.mjs 26.2 payouts    # one test

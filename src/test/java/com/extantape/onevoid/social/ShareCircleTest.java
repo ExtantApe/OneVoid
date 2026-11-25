@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Kids first: travel and teams only connect two online players who share a circle; anything else is no. */
 class ShareCircleTest {
-    static final List<String> CIRCLES = List.of("mayor.circle.kids", "mayor.circle.adults");
-    static final Set<String> KID = Set.of("mayor.circle.kids"), OTHER_KID = Set.of("mayor.circle.kids"), ADULT = Set.of("mayor.circle.adults");
+    static final List<String> CIRCLES = List.of("posse.circle.kids", "posse.circle.adults");
+    static final Set<String> KID = Set.of("posse.circle.kids"), OTHER_KID = Set.of("posse.circle.kids"), ADULT = Set.of("posse.circle.adults");
 
     @Test void controlTwoOnlineKidsInOneCircleShareIt() {
         assertTrue(Social.shareCircle(CIRCLES, true, KID::contains, true, OTHER_KID::contains));
@@ -18,6 +18,14 @@ class ShareCircleTest {
 
     @Test void aKidAndAnAdultNever() {
         assertFalse(Social.shareCircle(CIRCLES, true, KID::contains, true, ADULT::contains));
+    }
+
+    @Test void onlyPosseNodesAreCirclesAndTheOldMayorNodesAreNot() {
+        assertTrue(Social.isCircleNode("posse.circle.kids"));
+        assertFalse(Social.isCircleNode("mayor.circle.kids"), "the old name grants nothing");
+        assertFalse(Social.isCircleNode("posse.circle."));
+        assertFalse(Social.isCircleNode("posse.circle.*"));
+        assertFalse(Social.isCircleNode("posse.circles"));
     }
 
     @Test void noCirclesAtAllMeansNo() {

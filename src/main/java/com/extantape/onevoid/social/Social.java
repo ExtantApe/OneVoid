@@ -22,12 +22,12 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permission;
 
 /**
- * Island travel and teams. Both only ever connect two players who are online and share a Mayor circle,
+ * Island travel and teams. Both only ever connect two players who are online and share a Posse circle,
  * so kids reach only kids and adults only adults. If there are no circles, or a check can't be made, the
  * answer is no.
  */
 public final class Social {
-    private static final String CIRCLE = "mayor.circle.";
+    private static final String CIRCLE = "posse.circle.";
     private final OneVoidPlugin plugin;
     private final Map<UUID, Invite> invites = new HashMap<>();
 
@@ -42,10 +42,14 @@ public final class Social {
     private List<String> circleNodes() {
         List<String> out = new ArrayList<>();
         for (Permission perm : Bukkit.getPluginManager().getPermissions()) {
-            String n = perm.getName();
-            if (n.startsWith(CIRCLE) && n.length() > CIRCLE.length() && !n.endsWith("*")) out.add(n);
+            if (isCircleNode(perm.getName())) out.add(perm.getName());
         }
         return out;
+    }
+
+    /** A circle node is posse.circle.<name>. No older circle name is read (D196, D295). */
+    static boolean isCircleNode(String n) {
+        return n.startsWith(CIRCLE) && n.length() > CIRCLE.length() && !n.endsWith("*");
     }
 
     public boolean circlesExist() {

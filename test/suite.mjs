@@ -465,7 +465,7 @@ const tests = {
   async travelAndTeams() {
     const a = await bot('Ash'); const b = await bot('Birch'); const c = await bot('Cedar'); const d = await bot('Dell')
     for (const [n, circle] of [['Ash', 'kids'], ['Birch', 'kids'], ['Dell', 'kids'], ['Cedar', 'adults']])
-      await s.run(`lp user ${n} permission set mayor.circle.${circle} true`, /Set|already/)
+      await s.run(`lp user ${n} permission set posse.circle.${circle} true`, /Set|already/)
     await sleep(1500)
     await home(a); await home(b); await home(c)
     await platform(true)
@@ -601,8 +601,13 @@ const tests = {
   },
 
   async crashes() {
-    // A crash right after an island death.
+    // A crash right after an island death. The lobby inventory is set here, so this test also passes on its own.
     let a = await bot('Ash')
+    // Earlier tests can leave Ash on an island, where a give would land in the island inventory: empty it, go back to the lobby, then give.
+    await s.run('clear Ash', /Removed|No items/)
+    await s.run('execute in minecraft:overworld run tp Ash 0.5 -59 3.5', /Teleported/); await sleep(1500)
+    await s.run('clear Ash', /Removed|No items/); await s.run('give Ash diamond 5', /Gave/)
+    await sleep(500)
     await home(a)
     await platform(true)
     await s.run('execute in minecraft:oneblock run tp Ash 0.5 101 0.5', /Teleported/)

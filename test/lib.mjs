@@ -6,7 +6,7 @@ import path from 'node:path'
 import os from 'node:os'
 import mineflayer from 'mineflayer'
 
-export const PORT = 25621
+export const PORT = Number(process.env.OV_TEST_PORT ?? 25621)
 export const CLIENT = '26.1'
 export const JAVA = process.env.ONEVOID_TEST_JAVA ?? '/Library/Java/JavaVirtualMachines/openjdk-25.jdk/Contents/Home/bin/java'
 export const ROOT = new URL('../', import.meta.url).pathname
@@ -57,8 +57,8 @@ export class Server {
       mkdirSync(this.path('plugins/Waystation'), { recursive: true })
       writeFileSync(this.path('plugins/Waystation/config.yml'), ws)
     } else copyFileSync(jar(path.join(ROOT, 'test/standin/build/libs'), /^WaystationStandin.*\.jar$/), this.path('plugins/WaystationStandin.jar'))
-    // Mayor 0.1.1, from its GitHub release (see fetch.mjs).
-    copyFileSync(path.join(CACHE, 'Mayor-0.1.1.jar'), this.path('plugins/Mayor.jar'))
+    // Posse 0.11.0, from its GitHub release (see fetch.mjs).
+    copyFileSync(path.join(CACHE, 'Posse-0.11.0.jar'), this.path('plugins/Posse.jar'))
     for (const p of extraPlugins) copyFileSync(p, this.path('plugins', path.basename(p)))
     writeFileSync(this.path('eula.txt'), 'eula=true\n')
     writeFileSync(this.path('server.properties'), [
@@ -66,8 +66,8 @@ export class Server {
       'spawn-protection=0', 'enable-rcon=false', 'white-list=false', 'enforce-whitelist=false', 'enable-query=false', 'max-players=10', 'view-distance=4',
       'simulation-distance=4', 'gamemode=survival', 'difficulty=easy', 'spawn-monsters=false', 'allow-flight=true',
     ].join('\n') + '\n')
-    mkdirSync(this.path('plugins/Mayor'), { recursive: true })
-    writeFileSync(this.path('plugins/Mayor/config.yml'), 'config-version: 1\ncircles:\n  - kids\n  - adults\n')
+    mkdirSync(this.path('plugins/Posse'), { recursive: true })
+    writeFileSync(this.path('plugins/Posse/config.yml'), 'config-version: 1\ncircles:\n  - kids\n  - adults\n')
     // Test settings: short powers, so they can be seen ending.
     const vw = readFileSync(path.join(ROOT, 'src/main/resources/config.yml'), 'utf8')
     let text = vw
