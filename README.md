@@ -19,7 +19,7 @@ A OneBlock add-on for Paper. Players walk into OneBlock through the Waycave, rin
 - **Featherfall:** slow falling for 5 minutes.
 - **Void-safe:** for 2 minutes, falling into the void lifts the player back to their island with everything they carry.
 - **Bountiful block:** their one block drops double for 5 minutes.
-- **The void gives back:** a stated 1 in 3 chance that half of the weapons and armour they've given the void come back, each with one enchantment a level past the usual most (Sharpness VI, Protection V and so on). If not, the meter starts again 25% full and the gear stays for another try. Offered only when there's gear to give back.
+- **The void gives back:** a stated 1 in 3 chance that half of the weapons and armor they've given the void come back, each with one enchantment a level past the usual most (Sharpness VI, Protection V and so on). If not, the meter starts again 25% full and the gear stays for another try. Offered only when there's gear to give back.
 - **Island travel:** for 5 minutes, visit the islands of players who are online, share a Posse chat circle with them, and have turned visits on.
 
 Powers run in real time, survive a restart, and say when they end.
@@ -40,7 +40,7 @@ With the server stopped:
 2. In OneBlock, turn off two settings that fight OneVoid: `/ob autojoin false` and `/ob rebirth_on_the_island false`. With autojoin on, OneBlock cancels the trip back to a player's bell.
 3. In Waycave, set the OneBlock world's gate to `hand-over: true` and turn island posts off (`island-posts.enabled: false`). The bell replaces them.
 4. Put the OneBlock world in its own Multiverse-Inventories group, and the `waycave` world in a group with the lobby, so a death in OneBlock is a plain OneBlock-to-lobby swap.
-5. If Lantern Graves is installed, add the OneBlock world to its `disabled-worlds`. Otherwise it puts island deaths in graves. OneVoid takes void-death items before Lantern Graves sees them, so the two never both take the same items.
+5. If LanternGraves is installed, add the OneBlock world to its `disabled-worlds`. Otherwise it puts island deaths in graves. OneVoid takes void-death items before LanternGraves sees them, so the two never both take the same items.
 6. Start the server and run `/onevoid status`. It lists anything still wrong.
 
 Players keep OneBlock's `oneblock.join` permission. OneVoid refuses a typed `/ob` and hides it from tab-complete, but runs OneBlock's commands for players when they need them.
@@ -86,7 +86,7 @@ Bot tests (`test/suite.mjs`) on Paper 26.2, on 127.0.0.1, counting items after e
 Not tested yet:
 
 - Anything with a player on Paper 26.3, for the reason above. It awaits a newer bot client or a real one.
-- A real client: whether the bell looks and feels deliberate and is easy to find, how the meter and labels read day and night and for colour-blind players, whether payouts feel exciting and a void death feels like a consolation.
+- A real client: whether the bell looks and feels deliberate and is easy to find, how the meter and labels read day and night and for color-blind players, whether payouts feel exciting and a void death feels like a consolation.
 
 ## Troubleshooting
 
